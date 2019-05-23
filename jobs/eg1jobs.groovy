@@ -7,7 +7,6 @@ dashboardView('example') {
     columns {
         status()
         weather()
-        name()
         lastSuccess()
         lastFailure()
         lastDuration()
