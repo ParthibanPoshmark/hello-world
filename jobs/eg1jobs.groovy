@@ -1,12 +1,4 @@
 String repo="parthibanposhmark/hello-world"
-job("example1"){
-	scm{
-		github repo
-	}
-	triggers{
-		scm 'H/5 * * * *'
-	}
-} 
 
 dashboardView('example') {
     jobs {
@@ -15,24 +7,26 @@ dashboardView('example') {
     columns {
         status()
         weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
         buildButton()
+        buitlOn()
+        favorite()
     }
     topPortlets {
-        jenkinsJobsList {
-            displayName('acme jobs')
+        unstableJobs{
+        	displayName('Unstable Jobs')
         }
-    }
-    leftPortlets {
-        testStatisticsChart()
-    }
-    rightPortlets {
-        testTrendChart()
-    }
-    bottomPortlets {
-        iframe {
-            effectiveUrl('http://example.com')
-        }
-        testStatisticsGrid()
-        buildStatistics()
     }
 }
+
+job("example1"){
+	scm{
+		github repo
+	}
+	triggers{
+		scm 'H/5 * * * *'
+	}
+} 
