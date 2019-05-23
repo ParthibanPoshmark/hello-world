@@ -27,3 +27,10 @@ job("example1"){
 		scm 'H/10 * * * *'
 	}
 } 
+
+job('example') {
+    steps {
+        copyArtifacts('example1') {
+        		}
+        	}
+        }
