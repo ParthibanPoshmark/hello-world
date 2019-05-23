@@ -19,6 +19,11 @@ dashboardView('example') {
 	    }
 	}
 
+	folder('project-a') {
+    displayName('Project A')
+    description('Folder for project A')
+}
+
 job("example1"){
 	scm{
 		github repo
@@ -26,11 +31,4 @@ job("example1"){
 	triggers{
 		scm 'H/10 * * * *'
 	}
-} 
-
-job('example') {
-    steps {
-        copyArtifacts('example1') {
-        		}
-        	}
-        }
+}
