@@ -14,11 +14,11 @@ dashboardView('example') {
         buildButton()
     }
     topPortlets {
-        unstableJobs{
-        	displayName('Unstable Jobs')
-        }
-    }
-}
+        jenkinsJobsList {
+			displayName('Jobs')
+			}
+	    }
+	}
 
 job("example1"){
 	scm{
