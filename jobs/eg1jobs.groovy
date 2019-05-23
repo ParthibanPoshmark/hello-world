@@ -24,7 +24,7 @@ dashboardView('example') {
     description('Folder for project A')
 }
 
-job("example1"){
+job("project-a/example1"){
 	scm{
 		github repo
 	}
