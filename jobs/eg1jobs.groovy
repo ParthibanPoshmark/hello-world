@@ -12,7 +12,6 @@ dashboardView('example') {
         lastFailure()
         lastDuration()
         buildButton()
-        favorite()
     }
     topPortlets {
         unstableJobs{
