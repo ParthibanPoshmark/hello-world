@@ -24,6 +24,6 @@ job("example1"){
 		github repo
 	}
 	triggers{
-		scm 'H/5 * * * *'
+		scm 'H/10 * * * *'
 	}
 } 
