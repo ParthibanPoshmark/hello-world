@@ -72,6 +72,8 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
     stringParam('end_week_date', null ,'YYYY-MM-DD')
     stringParam('weeks_back', '2', null)
     booleanParam('upload_to_s3', true, null)
+    weight(1)
+    label('slave')
   }
 
 
