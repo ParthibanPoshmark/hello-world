@@ -4,6 +4,15 @@ folder('gdf-tatari') {
 	displayName('Tatari')
 }
 
+job("example1"){
+  scm{
+    github repo
+  }
+  triggers{
+    scm 'H/10 * * * *'
+  }
+}
+
 freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
 	description("<html>"+
   "<br/>"+
