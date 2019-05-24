@@ -88,6 +88,8 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   }
   wrappers{
     timeout{
+      abortBuild()
+      failBuild()
       elastic(200,3,30)
     }
   }
