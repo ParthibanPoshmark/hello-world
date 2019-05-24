@@ -76,6 +76,10 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   label('slave')
   weight(1)
   scm{
-     github('ParthibanPoshmark/hello-world', 'master', 'https', 'github.com')
+     git{
+      remote{
+        github('ParthibanPoshmark/hello-world', 'https', 'github.com')
+      }
+     }
   }
 }
