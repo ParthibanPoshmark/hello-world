@@ -6,10 +6,12 @@ folder('gdf-tatari') {
 
 folder('gdf-pinterest'){
 	displayName('Pinterest')
-	dashboardView('Dashboard'){
-		topPortlets{
-			buildStatistics{
-				displayName('Build Statistics')
+	views{
+		dashboardView('Dashboard'){
+			topPortlets{
+				buildStatistics{
+					displayName('Build Statistics')
+				}
 			}
 		}
 	}
