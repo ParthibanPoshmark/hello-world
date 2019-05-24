@@ -51,7 +51,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Git	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        "<a href='https://github.com/GoshPosh/automator/tree/GROWTH-326-TATARI_NEW_DATA_POINTS'>link</a>"+
+        ": <a href='https://github.com/GoshPosh/automator/tree/GROWTH-326-TATARI_NEW_DATA_POINTS'>link</a>"+
       "</td>"+
    	"</tr>"+
     
@@ -60,10 +60,19 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>JIRA	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        "<a href='https://poshmark.atlassian.net/browse/GROWTH-326'>link</a>"+
+        ": <a href='https://poshmark.atlassian.net/browse/GROWTH-326'>link</a>"+
       "</td>"+
    	"</tr>"+
 
   "</table>"+
 "</html>")
+
+  parameters{
+    stringParam('start_week_date', null ,'YYYY-MM-DD')
+    stringParam('end_week_date', null ,'YYYY-MM-DD')
+    stringParam('weeks_back', '2', null)
+    booleanParam('upload_to_s3', true, null)
+  }
+
+
 }
