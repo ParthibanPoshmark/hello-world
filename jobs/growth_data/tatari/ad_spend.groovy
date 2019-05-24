@@ -2,16 +2,15 @@ String repo="parthibanposhmark/hello-world"
 
 folder('gdf-tatari') {
 	displayName('Tatari')
-}
-
-folder('gdf-pinterest'){
-	displayName('Pinterest')
 	views{
 		dashboardView('Dashboard'){
 			topPortlets{
 				buildStatistics{
 					displayName('Build Statistics')
 				}
+			}
+			jobs{
+				regex('^gd-tatari-.*')
 			}
 		}
 	}
