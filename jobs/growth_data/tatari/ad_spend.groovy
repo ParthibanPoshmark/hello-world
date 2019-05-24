@@ -2,15 +2,6 @@ String repo="parthibanposhmark/hello-world"
 
 folder('gdf-tatari') {
 	displayName('Tatari')
-	views{
-		dashboardView('Dashboard'){
-			topPortlets{
-				buildStatistics{
-					displayName('Build Statistics')
-				}
-			}
-		}
-	}
 }
 
 freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
