@@ -4,6 +4,17 @@ folder('gdf-tatari') {
 	displayName('Tatari')
 }
 
+folder('gdf-pinterest'){
+	displayName('Pinterest')
+	dashboardView('Dashboard'){
+		topPortlets{
+			buildStatistics{
+				displayName('Build Statistics')
+			}
+		}
+	}
+}
+
 freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
 	description("<html>"+
   "<br/>"+
