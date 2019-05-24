@@ -77,9 +77,10 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   weight(1)
   scm{
      git{
-      branch('**/master')
+      branch('*/master')
       remote{
-        url('https://github.com/ParthibanPoshmark/hello-world')
+        url('git@github.com:GoshPosh/automator.git')
+        credentials('jenkins (GoshPosh/Automator)')
       }
      }
   }
