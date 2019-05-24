@@ -77,8 +77,9 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   weight(1)
   scm{
      git{
+      branch('**/master')
       remote{
-        url('https://github.com/ParthibanPoshmark/hello-world1')
+        url('https://github.com/ParthibanPoshmark/hello-world')
       }
      }
   }
