@@ -79,9 +79,6 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
      git{
       remote{
         url('https://github.com/ParthibanPoshmark/hello-world')
-        name('hello')
-        refspec('defe')
-        credentials('fgrhr')
       }
      }
   }
