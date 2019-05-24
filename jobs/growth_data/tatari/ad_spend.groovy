@@ -92,6 +92,6 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
     }
   }
   steps{
-    shell('bash $WORKSPACE/docker_scripts/tatari/spot_booking.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/tatari/spot_booking.sh')
   }
 }
