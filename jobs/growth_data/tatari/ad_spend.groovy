@@ -86,4 +86,10 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   triggers{
     cron('H H/12 * * * ')
   }
+  timeout{
+    elastic(200,3,30)
+  }
+  steps{
+    shell('bash $WORKSPACE/docker_scripts/tatari/spot_booking.sh')
+  }
 }
