@@ -76,6 +76,6 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   label('slave')
   weight(1)
   scm{
-     github('jenkinsci/job-dsl-plugin', 'master')
+     github('ParthibanPoshmark/hello-world', 'master', 'https', 'github.com')
   }
 }
