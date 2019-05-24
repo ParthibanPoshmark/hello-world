@@ -80,7 +80,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
       branch('*/master')
       remote{
         url('git@github.com:GoshPosh/automator.git')
-        credentials('jenkins (GoshPosh/Automator)')
+        credentials('hello')
       }
      }
   }
