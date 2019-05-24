@@ -86,7 +86,4 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   triggers{
     cron('H H/12 * * * ')
   }
-  timeout{
-    elastic(200,3,30)
-  }
 }
