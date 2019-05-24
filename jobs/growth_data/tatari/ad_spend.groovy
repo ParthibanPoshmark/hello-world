@@ -67,6 +67,13 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   "</table>"+
 "</html>")
 
-
-	
+	parameters{
+		stringParam('start_week_date', null, 'YYYY-MM-DD')
+		stringParam('end_week_date', null, 'YYYY-MM-DD')
+		stringParam('weeks_back', '2', null)
+		booleanParam('upload_to_s3', true, null)
+	}
+	weight(1)
+	label('slave')
+	github('GoshPosh/automator.git', '*/master', 'git', 'github.com')
 }
