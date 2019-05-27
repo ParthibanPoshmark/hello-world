@@ -66,16 +66,6 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
 
   label('master')
 
-  triggers{
-    cron('H * * * *')
-  }
-
-  wrappers{
-    timeout{
-      elastic(200,3,30)
-    }
-  }
-
   steps{
     phase('1'){
       phaseJob('gdf-pinterest/gd-pinterest-ad_spend-sync'){
