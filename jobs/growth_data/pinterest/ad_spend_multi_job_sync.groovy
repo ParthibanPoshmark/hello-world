@@ -64,7 +64,7 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
   
   concurrentBuild(true)
 
-  label('master')
+  label('slave')
 
   steps{
     phase('1'){
