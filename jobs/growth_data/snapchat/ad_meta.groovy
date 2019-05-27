@@ -91,24 +91,7 @@ freeStyleJob('gdf-snapchat/gd-snapchat-ad_meta') {
   }
 
   steps{
-      shell('#!/bin/bash --login -x\n\nCMD="$(aws ecr get-login --region us-west-1)"\nbash -lc "$CMD"\ndocker pull 666737672436.dkr.ecr.us-west-1.amazonaws.com/automator:latest\ndocker run \
-      -e TZ="America/Los_Angeles" \
-      -e LANG=en_US.UTF-8 \
-      --network host \
-      --add-host yaga-a1:10.1.56.202 \
-      --add-host yaga-a2:10.1.56.56 \
-      --add-host yaga-a3:10.1.68.194 \
-      --memory="8g" --sig-proxy=true --net="host" --privileged --memory-swappiness="0" --shm-size="8g" -w /goshposh/automator --rm -u ubuntu 666737672436.dkr.ecr.us-west-1.amazonaws.com/automator \
-      /bin/bash -lc \
-      "cd /goshposh/automator/ruby/ && \
-      rvm use ruby-2.3.1@automator && \
-      export upload_to_s3=$upload_to_s3 && \
-      export BUILD_URL=$BUILD_URL && \
-      export JOB_NAME=$JOB_NAME && \
-      export effective_status=$effective_status && \
-      export accounts=$accounts && \
-      bundle exec rake snapchat:ad_meta  RAKE_ENV=docker_production --trace && \
-      if [ \"$?\" != \"0\" ]; then exit 1; fi" ')
+      shell('#!/bin/bash --login -x\n\nCMD="$(aws ecr get-login --region us-west-1)"\nbash -lc "$CMD"\ndocker pull 666737672436.dkr.ecr.us-west-1.amazonaws.com/automator:latest\ndocker run \\\n-e TZ="America/Los_Angeles" \\\n-e LANG=en_US.UTF-8 \\\n--network host \\\n--add-host yaga-a1:10.1.56.202 \\\n--add-host yaga-a2:10.1.56.56 \\\n--add-host yaga-a3:10.1.68.194 \\\n--memory="8g" --sig-proxy=true --net="host" --privileged --memory-swappiness="0" --shm-size="8g" -w /goshposh/automator --rm -u ubuntu 666737672436.dkr.ecr.us-west-1.amazonaws.com/automator \\\n/bin/bash -lc \\\n"cd /goshposh/automator/ruby/ && \\\nrvm use ruby-2.3.1@automator && \\\nexport upload_to_s3=$upload_to_s3 && \\\nexport BUILD_URL=$BUILD_URL && \\\nexport JOB_NAME=$JOB_NAME && \\\nexport effective_status=$effective_status && \\\nexport accounts=$accounts && \\\nbundle exec rake snapchat:ad_meta  RAKE_ENV=docker_production --trace && \\\nif [ \"$?\" != \"0\" ]; then exit 1; fi" ')
   }
 
 }
