@@ -3,7 +3,6 @@ freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-3_days') {
   "<br/>"+
   "<br/>"+
   "<table>"+
-
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
        "<b>Description	</b>"+	
