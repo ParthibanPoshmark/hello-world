@@ -1,4 +1,4 @@
-multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
+freeStyleJob('gdf-pinterest/gd-pinterest-campaign_meta') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Multi job which triggers ad_spend tasks from pinterest at daily and hourly level "+
+        ": Pulls campaign meta data information from pinterest "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acquisition_spend, analytics.dw_spend_estimates "+
+        ": 	analytics.dw_growth_campaign "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": pinterest/ad_spend.rake, pinterest/ad_spend_hourly.rake "+
+        ": pinterest/campaign_meta.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -60,25 +60,32 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
   "</table>"+
 "</html>")
 
+  bloackOn('.*pinterest-ad_spend.*'){
+    blockLevel('GLOBAL')
+    scanQueueFor('DISABLED')
+  }
+
+  logRotator(-1, 30, -1, -1)
+
+  parameters{
+    booleanParam('upload_to_s3', true, null)
+  }
+
   weight(1)
   
-  concurrentBuild(true)
+  label('slave')
 
-  label('x86 && ubuntu')
+  scm{
+     git{
+      branch('*/master')
+      remote{
+        url('https://github.com/ParthibanPoshmark/hello-world')
+      }
+     }
+  }
 
   steps{
-    phase('1'){
-      phaseJob('gdf-pinterest/gd-pinterest-ad_spend-sync'){
-      killPhaseCondition('NEVER')
-      currentJobParameters(true)
-      }
-      phaseJob('gdf-pinterest/gd-pinterest-ad_spend_hourly-sync'){
-      killPhaseCondition('NEVER')
-      currentJobParameters(true)
-      }
-      executionType('SEQUENTIALLY')
-      continuationCondition('ALWAYS')
-    }
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_pintrest.sh')
   }
 
 }

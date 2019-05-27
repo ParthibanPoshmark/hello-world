@@ -1,61 +1,61 @@
-multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
-	description("<html>"+
+multiJob('gdf-pinterest/gd-pinterest-adset_meta-multi_job') {
+  description("<html>"+
   "<br/>"+
   "<br/>"+
   "<table>"+
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Description	</b>"+	
+       "<b>Description  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Multi job which triggers ad_spend tasks from pinterest at daily and hourly level "+
+        ": Multi job which triggers pinterest task pulling adset meta information "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
     
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Updates Table	</b>"+	
+       "<b>Updates Table  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acquisition_spend, analytics.dw_spend_estimates "+
+        ":  analytics.dw_growth_adset "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
-   	"<tr>"+
+    "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Owner	</b>"+	
+       "<b>Owner  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	kamal@poshmark.com, parthiban@poshmark.com "+
+        ":  kamal@poshmark.com, parthiban@poshmark.com "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
-   	"<tr>"+
+    "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Rake File	</b>"+	
+       "<b>Rake File  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": pinterest/ad_spend.rake, pinterest/ad_spend_hourly.rake "+
+        ": ppinterest/adset_meta.rake "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
-   	"<tr>"+
+    "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Git	</b>"+	
+       "<b>Git  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
         ": NA"+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
     
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>JIRA	</b>"+	
+       "<b>JIRA </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
         ": NA"+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
   "</table>"+
 "</html>")
@@ -64,19 +64,20 @@ multiJob('gdf-pinterest/gd-pinterest-ad_spend-multi_job_sync') {
   
   concurrentBuild(true)
 
-  label('x86 && ubuntu')
+  label('master')
+
+  triggers{
+    cron('30 H/4 * * *')
+  }
 
   steps{
     phase('1'){
-      phaseJob('gdf-pinterest/gd-pinterest-ad_spend-sync'){
-      killPhaseCondition('NEVER')
+      phaseJob('gdf-pinterest/gd-pinterest-adset_meta'){
+      killPhaseCondition('FAILURE')
+      abortAllJobs(true)
       currentJobParameters(true)
       }
-      phaseJob('gdf-pinterest/gd-pinterest-ad_spend_hourly-sync'){
-      killPhaseCondition('NEVER')
-      currentJobParameters(true)
-      }
-      executionType('SEQUENTIALLY')
+      executionType('PARALLEL')
       continuationCondition('ALWAYS')
     }
   }

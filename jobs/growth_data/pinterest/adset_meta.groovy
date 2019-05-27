@@ -1,75 +1,70 @@
-freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-3_days') {
-	description("<html>"+
+freeStyleJob('gdf-pinterest/gd-pinterest-adset_meta') {
+  description("<html>"+
   "<br/>"+
   "<br/>"+
   "<table>"+
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Description	</b>"+	
+       "<b>Description  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls daily ad spend information from snapchat for the last 3 days "+
+        ": Pulls adset meta information from pinterest "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
     
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Updates Table	</b>"+	
+       "<b>Updates Table  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acquisition_spend "+
+        ":  analytics.dw_growth_adset "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
-   	"<tr>"+
+    "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Owner	</b>"+	
+       "<b>Owner  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	kamal@poshmark.com, parthiban@poshmark.com "+
+        ":  kamal@poshmark.com, parthiban@poshmark.com "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
-   	"<tr>"+
+    "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Rake File	</b>"+	
+       "<b>Rake File  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	snapchat/ad_spend.rake"+
+        ": pinterest/adset_meta.rake "+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
-   	"<tr>"+
+    "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>Git	</b>"+	
+       "<b>Git  </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
         ": NA"+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
     
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
-       "<b>JIRA	</b>"+	
+       "<b>JIRA </b>"+  
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
         ": NA"+
       "</td>"+
-   	"</tr>"+
+    "</tr>"+
 
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
   parameters{
     booleanParam('upload_to_s3', true, null)
-    stringParam('start_date', null , 'YYYY-MM-DD')
-    stringParam('end_date', null, 'YYYY-MM-DD')
-    stringParam('days_back', '3', null)
   }
 
-  weight(1)
+  weight(2)
   
   label('slave')
 
@@ -82,12 +77,14 @@ freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-3_days') {
      }
   }
 
-  triggers{
-    cron('H H/3 * * *')
+  wrappers{
+    timeout{
+      elastic(200,3,180)
+    }
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/snapchat/import_ad_spend_api.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/pintrest/import_ad_meta_pin_api.sh')
   }
 
 }
