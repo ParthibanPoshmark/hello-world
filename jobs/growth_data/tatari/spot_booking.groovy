@@ -1,4 +1,4 @@
-freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
+freeStyleJob('gdf-tatari/gd-tatari-spot_booking') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -9,7 +9,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Fetches spend data, campaign and ad metadata from tatari for the last 10 days "+
+        ": Fetches spot booking weekly data from tatari for the last 2 weeks "+
       "</td>"+
    	"</tr>"+
     
@@ -18,7 +18,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_tatari_spend, analytics.dw_growth_campaign, analytics.dw_growth_ad, analytics.dw_acquisition_spend "+
+        ": 	analytics.dw_tatari_spot_booking "+
       "</td>"+
    	"</tr>"+
 
@@ -36,7 +36,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	tatari/ad_spend.rake"+
+        ":	tatari/spot_booking.rake"+
       "</td>"+
    	"</tr>"+
 
@@ -45,7 +45,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Git	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": NA"+
+        ": <a href='https://github.com/GoshPosh/automator/tree/GROWTH-326-TATARI_NEW_DATA_POINTS'>link</a>"+
       "</td>"+
    	"</tr>"+
     
@@ -54,29 +54,24 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>JIRA	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": NA"+
+        ": <a href='https://poshmark.atlassian.net/browse/GROWTH-326'>link</a>"+
       "</td>"+
    	"</tr>"+
 
   "</table>"+
 "</html>")
 
-  blockOn('.*dw_acquisition_spend.*'){
-    blockLevel('GLOBAL')
-    scanQueueFor('ALL')
-  }
-
   parameters{
-    stringParam('start_date', null ,'YYYY-MM-DD')
-    stringParam('end_date', null ,'YYYY-MM-DD')
-    stringParam('days_back', '10', null)
+    stringParam('start_week_date', null ,'YYYY-MM-DD')
+    stringParam('end_week_date', null ,'YYYY-MM-DD')
+    stringParam('weeks_back', '2', null)
     booleanParam('upload_to_s3', true, null)
   }
 
   weight(1)
-  
-  label('slave')
 
+  label('slave')
+  
   scm{
      git{
       branch('*/master')
@@ -87,7 +82,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   }
 
   triggers{
-    cron('H 6,7,8,9,10,14,18,22,4 * * * ')
+    cron('H H/12 * * * ')
   }
 
   wrappers{
@@ -97,7 +92,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/tatari/ingest_data.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/tatari/spot_booking.sh')
   }
 
 }
