@@ -1,4 +1,4 @@
-freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-3_days') {
+freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-sync') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
