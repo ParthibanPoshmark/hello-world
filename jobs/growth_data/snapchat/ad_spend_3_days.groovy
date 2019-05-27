@@ -87,12 +87,6 @@ freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-3_days') {
     cron('H H/3 * * *')
   }
 
-  wrappers{
-    timeout{
-      elastic(200,3,30)
-    }
-  }
-
   steps{
     shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/snapchat/import_ad_spend_api.sh')
   }
