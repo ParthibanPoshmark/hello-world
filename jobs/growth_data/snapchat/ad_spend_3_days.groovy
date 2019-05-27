@@ -70,7 +70,7 @@ freeStyleJob('gdf-snapchat/gd-snapchat-ad_spend-3_days') {
     stringParam('days_back', '3', null)
   }
 
-  weight(1)
+  weight(5)
   
   label('slave')
 
