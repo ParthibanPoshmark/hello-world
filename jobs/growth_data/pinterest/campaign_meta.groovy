@@ -60,11 +60,32 @@ freeStyleJob('gdf-pinterest/gd-pinterest-campaign_meta') {
   "</table>"+
 "</html>")
 
-  bloackOn('.*pinterest-ad_spend.*'){
+  blockOn('.*pinterest-ad_spend.*'){
     blockLevel('GLOBAL')
     scanQueueFor('DISABLED')
   }
 
+  logRotator(-1, 30, -1, -1)
+
+  parameters{
+    booleanParam('upload_to_s3', true, null)
+  }
+
+  weight(1)
   
+  label('slave')
+
+  scm{
+     git{
+      branch('*/master')
+      remote{
+        url('https://github.com/ParthibanPoshmark/hello-world')
+      }
+     }
+  }
+
+  steps{
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_pintrest.sh')
+  }
 
 }
