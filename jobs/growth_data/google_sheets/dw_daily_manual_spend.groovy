@@ -82,16 +82,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
      }
   }
 
-  authenticationToken('cytokinestorm')
-
   triggers{
-    cron('H H/2 * * *')
-  }
-
-  wrappers {
-    timeout {
-      absolute(60)
-    }
+    cron('H H/4 * * *')
   }
 
   steps{
