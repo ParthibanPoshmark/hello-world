@@ -115,12 +115,12 @@ multiJob('gdf-multi_job/gd-multi_job-campaign_meta') {
       currentJobParameters(true)
       }
        phaseJob('gdf-other_partners/gd-other_partners-unity_campaign_meta'){
-      killPhaseCondition('NEVER')
+      killPhaseCondition('FAILURE')
       currentJobParameters(true)
       abortAllJobs(true)
       }
        phaseJob('gdf-other_partners/gd-other_partners-taboola_campaign_meta'){
-      killPhaseCondition('NEVER')
+      killPhaseCondition('FAILURE')
       currentJobParameters(true)
       abortAllJobs(true)
       }
