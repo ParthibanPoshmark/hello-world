@@ -1,15 +1,14 @@
-freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
+freeStyleJob('gdf-other_partners/gd-other_partners-criteo_campaign_meta') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
   "<table>"+
-
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls ad spend information from bing for the last 7 days "+
+        ": Pulls campaign meta information from criteo "+
       "</td>"+
    	"</tr>"+
     
@@ -18,7 +17,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acquisition_spend "+
+        ": 	analytics.dw_growth_campaign "+
       "</td>"+
    	"</tr>"+
 
@@ -36,7 +35,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	other_partners/bing_spend.rake"+
+        ":	other_partners/criteo_campaign_meta.rake"+
       "</td>"+
    	"</tr>"+
 
@@ -65,9 +64,6 @@ freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
 
   parameters{
     booleanParam('upload_to_s3', true, null)
-    stringParam('start_date', null , 'YYYY-MM-DD')
-    stringParam('end_date', null , 'YYYY-MM-DD')
-    stringParam('days_back', '7', null)
   }
 
   weight(1)
@@ -75,7 +71,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
   label('slave')
 
   disabled(true)
-  
+
   scm{
      git{
       branch('*/master')
@@ -85,12 +81,8 @@ freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
      }
   }
 
-  triggers{
-    cron('H * * * *')
-  }
-
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/bing/Bing_ads_auto_spend_import.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_criteo.sh')
   }
 
 }
