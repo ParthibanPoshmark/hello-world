@@ -117,6 +117,7 @@ multiJob('gdf-multi_job/gd-multi_job-campaign_meta') {
        phaseJob('gdf-other_partners/gd-other_partners-unity_campaign_meta'){
       killPhaseCondition('NEVER')
       currentJobParameters(true)
+      abortAllJobs(true)
       }
        phaseJob('gdf-other_partners/gd-other_partners-taboola_campaign_meta'){
       killPhaseCondition('NEVER')
@@ -125,7 +126,6 @@ multiJob('gdf-multi_job/gd-multi_job-campaign_meta') {
       }
       executionType('SEQUENTIALLY')
       continuationCondition('ALWAYS')
-      abortAllJobs(true)
     }
   }
 
