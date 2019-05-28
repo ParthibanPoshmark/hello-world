@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
+freeStyleJob('gdf-google_sheets/gd-google_sheets-monthly_daily_targets') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
+        ": Pulls daily, monthly targets from daily_target, monthly_targets google sheet then updates the same in analytics_growth_beta.dw_daily_targets and analytics_growth_beta.dw_monthly_targets and finally it gets updated to analytics.dw_growth_unit_segment_daily_forecast table "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_daily_manual_spend "+
+        ": 	analytics.dw_growth_unit_segment_daily_forecast "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/dw_daily_manual_spend.rake "+
+        ":	google_sheets/monthly_daily_targets.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -63,8 +63,9 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   logRotator(-1, 30, -1, -1)
 
   parameters{
-    booleanParam('upload_to_s3', true, 'Default is true')
-    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
+    booleanParam('upload_to_s3', true, null)
+    stringParam('start_date', null, null)
+    stringParam('end_date', null, null)
   }
 
   weight(1)
@@ -82,20 +83,16 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
      }
   }
 
-  authenticationToken('cytokinestorm')
-
   triggers{
-    cron('H H/2 * * *')
+    cron('H H/4 * * *')
   }
 
-  wrappers {
-    timeout {
-      absolute(60)
-    }
+  publishers{
+    downstream('SA_budget_forecasting_query,SA_budget_pacing_query', 'SUCCESS')
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/targets.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/auto_import_manual_spend.sh')
   }
 
 }
