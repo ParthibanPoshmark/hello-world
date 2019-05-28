@@ -72,6 +72,8 @@ freeStyleJob('gdf-tatari/gd-tatari-spot_booking') {
 
   label('slave')
   
+  disabled(true)
+  
   scm{
      git{
       branch('*/master')

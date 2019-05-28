@@ -66,6 +66,8 @@ multiJob('gdf-pinterest/gd-pinterest-adset_meta-multi_job') {
 
   label('master')
 
+  disabled(true)
+  
   triggers{
     cron('30 H/4 * * *')
   }

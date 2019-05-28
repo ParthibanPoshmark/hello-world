@@ -71,6 +71,8 @@ freeStyleJob('gdf-pinterest/gd-pinterest-ad_spend-7_days') {
   
   label('slave')
 
+  disabled(true)
+  
   scm{
      git{
       branch('*/master')

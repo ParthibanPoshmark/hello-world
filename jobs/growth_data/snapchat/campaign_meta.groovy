@@ -70,6 +70,8 @@ freeStyleJob('gdf-snapchat/gd-snapchat-campaign_meta') {
   
   label('slave')
 
+  disabled(true)
+
   scm{
      git{
       branch('*/master')

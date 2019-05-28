@@ -75,6 +75,8 @@ freeStyleJob('gdf-pinterest/gd-pinterest-campaign_meta') {
   
   label('slave')
 
+  disabled(true)
+
   scm{
      git{
       branch('*/master')

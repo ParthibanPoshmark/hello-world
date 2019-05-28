@@ -68,6 +68,8 @@ freeStyleJob('gdf-pinterest/gd-pinterest-adset_meta') {
   
   label('slave')
 
+  disabled(true)
+
   scm{
      git{
       branch('*/master')

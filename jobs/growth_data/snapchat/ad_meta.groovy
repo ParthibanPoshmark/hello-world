@@ -71,6 +71,8 @@ freeStyleJob('gdf-snapchat/gd-snapchat-ad_meta') {
   
   label('slave')
 
+  disabled(true)
+  
   scm{
      git{
       branch('*/master')

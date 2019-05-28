@@ -72,6 +72,8 @@ freeStyleJob('gdf-pinterest/gd-pinterest-ad_spend-sync') {
   
   label('slave')
 
+  disabled(true)
+  
   scm{
      git{
       branch('*/master')

@@ -77,6 +77,8 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   
   label('slave')
 
+  disabled(true)
+  
   scm{
      git{
       branch('*/master')
