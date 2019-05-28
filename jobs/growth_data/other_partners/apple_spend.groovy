@@ -1,4 +1,4 @@
-freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
+freeStyleJob('gdf-other_partners/gd-other_partners-apple_spend') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -9,7 +9,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Fetches spend data, campaign and ad metadata from tatari for the last 10 days "+
+        ": Pulls ad spend information from apple for the last 2 days "+
       "</td>"+
    	"</tr>"+
     
@@ -18,7 +18,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_tatari_spend, analytics.dw_growth_campaign, analytics.dw_growth_ad, analytics.dw_acquisition_spend "+
+        ": 	analytics.dw_acquisition_spend "+
       "</td>"+
    	"</tr>"+
 
@@ -36,7 +36,7 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	tatari/ad_spend.rake"+
+        ":	other_partners/apple_spend.rake"+
       "</td>"+
    	"</tr>"+
 
@@ -61,16 +61,13 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   "</table>"+
 "</html>")
 
-  blockOn('.*dw_acquisition_spend.*'){
-    blockLevel('GLOBAL')
-    scanQueueFor('ALL')
-  }
+  logRotator(-1, 30, -1, -1)
 
   parameters{
-    stringParam('start_date', null ,'YYYY-MM-DD')
-    stringParam('end_date', null ,'YYYY-MM-DD')
-    stringParam('days_back', '10', null)
     booleanParam('upload_to_s3', true, null)
+    stringParam('days_back', '3', null)
+    stringParam('start_date', null , null)
+    stringParam('end_date', null , null)
   }
 
   weight(1)
@@ -89,17 +86,11 @@ freeStyleJob('gdf-tatari/gd-tatari-ad_spend') {
   }
 
   triggers{
-    cron('H 6,7,8,9,10,14,18,22,4 * * * ')
-  }
-
-  wrappers{
-    timeout{
-      elastic(200,3,30)
-    }
+    cron('H/30 * * * *')
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/tatari/ingest_data.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/apple/apple_search_ads_import_spend.sh')
   }
 
 }
