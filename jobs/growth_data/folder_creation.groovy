@@ -13,3 +13,8 @@ folder('gdf-pinterest'){
 folder('gdf-other_partners'){
 	displayName('Other Partners')
 }
+
+folder('gdf-multi_job'){
+	displayName('MultiJob')
+}
+
