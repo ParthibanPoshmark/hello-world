@@ -9,3 +9,7 @@ folder('gdf-snapchat'){
 folder('gdf-pinterest'){
 	displayName('Pinterest')
 }
+
+folder('gdf-other_partners'){
+	displayName('Other Partners')
+}
