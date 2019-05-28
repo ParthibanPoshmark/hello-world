@@ -61,7 +61,7 @@ freeStyleJob('gdf-homeland/gd-homeland-run') {
 "</html>")
 
   parameters{
-    stringParam('specific_model', null, null, true)
+    stringParam('specific_model', null, null)
   }
 
   weight(1)
