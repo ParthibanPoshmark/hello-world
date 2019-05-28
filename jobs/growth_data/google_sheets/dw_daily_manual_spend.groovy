@@ -86,10 +86,6 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
     cron('H H/4 * * *')
   }
 
-  environmentVariables {
-    keepBuildVariables(true)
-  }
-  
   steps{
     shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/auto_import_manual_spend.sh')
   }
