@@ -74,7 +74,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-posh_influencer_ad_meta') {
   
   label('slave')
 
-  disabled(true) //Its disabled
+  disabled(true)
   
   scm{
      git{

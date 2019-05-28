@@ -74,7 +74,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-taboola_spend') {
   
   label('slave')
 
-  disabled(true) //Its disabled
+  disabled(true)
   
   scm{
      git{
@@ -94,7 +94,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-taboola_spend') {
       elastic(150, 3, 60)
     }
   }
-  
+
   steps{
     shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/taboola_ad_spend.sh')
   }

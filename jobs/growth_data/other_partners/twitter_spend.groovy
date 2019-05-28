@@ -1,4 +1,4 @@
-freeStyleJob('gdf-other_partners/gd-other_partners-raw_install_spend-3_days') {
+freeStyleJob('gdf-other_partners/gd-other_partners-twitter_spend') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -9,7 +9,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-raw_install_spend-3_days') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls raw install spend information for the last 3 days "+
+        ": Pulls ad spend information from twitter for the last 6 days "+
       "</td>"+
    	"</tr>"+
     
@@ -36,7 +36,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-raw_install_spend-3_days') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	other_partners/raw_install_spend.rake"+
+        ":	other_partners/twitter_spend.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -65,16 +65,16 @@ freeStyleJob('gdf-other_partners/gd-other_partners-raw_install_spend-3_days') {
 
   parameters{
     booleanParam('upload_to_s3', true, null)
-    stringParam('start_date', null , null)
-    stringParam('end_date', null , null)
-    stringParam('days_back', '3', null)
+    stringParam('start_date', null , 'YYYY-MM-DD')
+    stringParam('end_date', null , 'YYYY-MM-DD')
+    stringParam('days_back', '6', null)
   }
 
   weight(1)
   
   label('slave')
 
-  disabled(true)
+  disabled(true) //Its disabled
   
   scm{
      git{
@@ -86,11 +86,11 @@ freeStyleJob('gdf-other_partners/gd-other_partners-raw_install_spend-3_days') {
   }
 
   triggers{
-    cron('H/45 * * * *')
+    cron('H * * * *')
   }
-
+  
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/non_social_raw_compute_spend.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/twitter_ad_spend_api.sh')
   }
 
 }

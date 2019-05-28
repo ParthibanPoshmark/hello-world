@@ -74,7 +74,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-raw_install_spend-sync') {
   
   label('slave')
 
-  disabled(true) //Its disabled
+  disabled(true)
   
   scm{
      git{
