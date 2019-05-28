@@ -93,7 +93,8 @@ freeStyleJob('gdf-other_partners/gd-other_partners-taboola_spend') {
     timeout {
       elastic(150, 3, 60)
     }
-
+  }
+  
   steps{
     shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/taboola_ad_spend.sh')
   }
