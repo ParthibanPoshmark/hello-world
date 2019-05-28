@@ -83,8 +83,16 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-monthly_daily_targets') {
      }
   }
 
+  authenticationToken('cytokinestorm')
+
   triggers{
-    cron('H H/4 * * *')
+    cron('H H/2 * * *')
+  }
+
+  wrappers{
+    timeout{
+      absolute(20)
+    }
   }
 
   publishers{
@@ -92,7 +100,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-monthly_daily_targets') {
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/auto_import_manual_spend.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/targets.sh')
   }
 
 }

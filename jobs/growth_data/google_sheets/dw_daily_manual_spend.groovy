@@ -95,7 +95,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/targets.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/auto_import_manual_spend.sh')
   }
 
 }
