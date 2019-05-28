@@ -63,7 +63,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-spend_data') {
   logRotator(-1, 30, -1, -1)
 
   parameters{
-    stringParam('doc_key', null, null)
+    booleanParam('upload_to_s3', true, null)
     stringParam('worksheets', 'iheart', null)
   }
 
@@ -71,7 +71,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-spend_data') {
   
   label('slave')
 
-  disabled(true)
+  disabled(true) //Its disabled
 
   scm{
      git{
@@ -87,9 +87,9 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-spend_data') {
   triggers{
     cron('H 8 * * *')
   }
-  
+
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/sheets_to_redshift.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/spend_data_pull.sh')
   }
 
 }
