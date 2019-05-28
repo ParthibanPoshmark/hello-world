@@ -81,7 +81,7 @@ freeStyleJob('gdf-other_partners/gd-other_partners-yahoo_campaign_meta') {
      }
   }
 
-  steps{s
+  steps{
     shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_yahoo.sh')
   }
 
