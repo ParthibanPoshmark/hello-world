@@ -1,4 +1,4 @@
-freeStyleJob('gdf-homeland/gd-homeland-run') {
+freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-homeland/gd-homeland-run') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Populates data into dw_users_historical_attribution with older attribution priorities(used for backup) "+
+        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-homeland/gd-homeland-run') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics_growth_beta.dw_users_historical_attribution "+
+        ": 	analytics.dw_daily_manual_spend "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-homeland/gd-homeland-run') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	homeland/run.rake "+
+        ":	google_sheets/dw_daily_manual_spend.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -60,8 +60,11 @@ freeStyleJob('gdf-homeland/gd-homeland-run') {
   "</table>"+
 "</html>")
 
+  logRotator(-1, 30, -1, -1)
+
   parameters{
-    stringParam('specific_model', null, null, true)
+    booleanParam('upload_to_s3', true, 'Default is true')
+    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
   }
 
   weight(1)
@@ -79,16 +82,16 @@ freeStyleJob('gdf-homeland/gd-homeland-run') {
      }
   }
 
-  authenticationToken('thisistoken')
-
-  wrappers {
-    timeout {
-      elastic(200, 3, 30)
-    }
+  triggers{
+    cron('H H/4 * * *')
   }
 
+  environmentVariables {
+    keepBuildVariables(true)
+  }
+  
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/homeland/run.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/spend/auto_import_manual_spend.sh')
   }
 
 }
