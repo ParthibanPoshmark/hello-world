@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
+freeStyleJob('gdf-google/gd-google-ad_spend-sync') { 
 	description("<html>"+
   "<br/>"+
   "<br/>"+
