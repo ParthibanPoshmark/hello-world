@@ -1,15 +1,14 @@
-freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
+freeStyleJob('gdf-google/gd-google-campaign_meta') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
   "<table>"+
-
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls campaign level spend data from google "+
+        ": Pulls campaign metadata from google "+
       "</td>"+
    	"</tr>"+
     
@@ -18,7 +17,7 @@ freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acquisition_spend "+
+        ": 	analytics.dw_growth_campaign "+
       "</td>"+
    	"</tr>"+
 
@@ -36,7 +35,7 @@ freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google/ad_spend.rake "+
+        ":	google/campaign_meta.rake"+
       "</td>"+
    	"</tr>"+
 
@@ -61,20 +60,18 @@ freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
   "</table>"+
 "</html>")
 
+  logRotator(-1, 30, -1, -1)
+
   parameters{
-    stringParam('start_date', null , 'YYYY-MM-DD')
-    stringParam('end_date', null , 'YYYY-MM-DD')
-    stringParam('days_back', '0', null)
     booleanParam('upload_to_s3', true, null)
-    stringParam('last', '0', null)
   }
 
   weight(1)
   
   label('slave')
 
-  disabled(true) //Its disabled
-  
+  disabled(true)
+
   scm{
      git{
       branch('*/master')
@@ -83,15 +80,9 @@ freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
       }
      }
   }
-  
-  wrappers {
-    timeout {
-      absolute(10)
-    }
-  }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_adwords/google_adwords_auto_spend_import.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_google_adwords.sh')
   }
 
 }
