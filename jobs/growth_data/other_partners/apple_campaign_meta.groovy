@@ -68,6 +68,8 @@ freeStyleJob('gdf-other_partners/gd-other_partners-apple_campaign_meta') {
 
   weight(1)
   
+  disabled(true)
+  
   label('slave')
 
   scm{
