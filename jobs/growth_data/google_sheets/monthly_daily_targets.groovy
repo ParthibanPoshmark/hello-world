@@ -100,7 +100,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-monthly_daily_targets') {
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/targets.sh')
+    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export start_date=$start_date && \\\nexport end_date=$end_date && \\\nbundle exec rake google_sheets:monthly_daily_targets RAKE_ENV=docker_production --trace"')
+   
   }
 
 }

@@ -88,7 +88,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-revenue_forecast') {
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/import_daily_growth_unit_forecast.sh')
+    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "bundle exec rake google_sheets:revenue_forecast RAKE_ENV=docker_production --trace"')
   }
 
 }

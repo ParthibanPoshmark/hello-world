@@ -1,14 +1,15 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
+freeStyleJob('gdf-google/gd-google-ad_spend-3_days') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
   "<table>"+
+
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls meta information about the channel such as growth_unit, acq_channel_group, platform, fixed_cpi, spend_cap etc., from channel_mappings google sheet "+
+        ": Pulls spend data from google for the last 3 days "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +18,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acq_channel_meta "+
+        ": 	analytics.dw_acquisition_spend "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +36,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/pull_channel_meta.rake "+
+        ":	google/ad_spend.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -60,9 +61,10 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
   parameters{
+    stringParam('start_date', null , 'YYYY-MM-DD')
+    stringParam('end_date', null , 'YYYY-MM-DD')
+    stringParam('days_back', '3', null)
     booleanParam('upload_to_s3', true, null)
   }
 
@@ -70,8 +72,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
   
   label('slave')
 
-  disabled(true)
-
+  disabled(true) //Its disabled
+  
   scm{
      git{
       branch('*/master')
@@ -81,14 +83,12 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
      }
   }
 
-  authenticationToken('cytokinestorm')
-  
   triggers{
-    cron('H 0,6,8,12,16,20 * * *')
+    cron('H * * * *')
   }
-
+  
   steps{
-     shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export sheet_name=\'channel_mappings\' && \\\nbundle exec rake google_sheets:pull_channel_meta  RAKE_ENV=docker_production --trace"')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_adwords/google_adwords_auto_spend_import.sh')
   }
 
 }

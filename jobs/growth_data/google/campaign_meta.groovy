@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
+freeStyleJob('gdf-google/gd-google-campaign_meta') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls meta information about the channel such as growth_unit, acq_channel_group, platform, fixed_cpi, spend_cap etc., from channel_mappings google sheet "+
+        ": Pulls campaign metadata from google "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_acq_channel_meta "+
+        ": 	analytics.dw_growth_campaign "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/pull_channel_meta.rake "+
+        ":	google/campaign_meta.rake"+
       "</td>"+
    	"</tr>"+
 
@@ -81,14 +81,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-pull_channel_meta') {
      }
   }
 
-  authenticationToken('cytokinestorm')
-  
-  triggers{
-    cron('H 0,6,8,12,16,20 * * *')
-  }
-
   steps{
-     shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export sheet_name=\'channel_mappings\' && \\\nbundle exec rake google_sheets:pull_channel_meta  RAKE_ENV=docker_production --trace"')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_google_adwords.sh')
   }
 
 }

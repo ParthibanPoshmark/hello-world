@@ -89,7 +89,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-spend_data') {
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/spend_data_pull.sh')
+    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export worksheets=$worksheets && bundle exec rake google_sheets:spend_data RAKE_ENV=docker_production --trace"')
+ 
   }
 
 }

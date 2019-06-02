@@ -80,7 +80,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-sheets_to_redshift') {
   authenticationToken('cytokinestorm')
 
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_sheet/sheets_to_redshift.sh')
+    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export doc_key=$doc_key && \\\nexport gid=$gid && \\\nexport hidden_columns=$hidden_columns && \\\nexport sheet_name=\"$sheet_name\" && \\\nexport slack_display_name=\\"$slack_display_name\\" && \\\nbundle exec rake google_sheets:sheets_to_redshift RAKE_ENV=docker_production --trace"')
+  
   }
 
 }
