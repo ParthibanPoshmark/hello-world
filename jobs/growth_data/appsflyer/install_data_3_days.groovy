@@ -63,13 +63,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
 
    logRotator(-1, 30, -1, -1)
 
-  parameters{
-    stringParam('start_date', null , 'YYYY-MM-DD')
-    stringParam('end_date', null , 'YYYY-MM-DD')
-    stringParam('days_back', '3', null)
-    booleanParam('upload_to_s3', true, null)
-    stringParam('media_source', null, 'Add One media source that you want to filter on. Leave blank otherwise')
-  }
+
 
   weight(1)
   
@@ -95,6 +89,10 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
       elastic(300,5,90)
     }
     failBuild()
+  }
+
+  steps{
+    shell('bash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_install.sh')
   }
 
 }
