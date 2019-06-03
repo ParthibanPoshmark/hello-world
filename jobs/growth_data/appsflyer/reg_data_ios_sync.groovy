@@ -98,7 +98,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-reg_data-ios_sync') {
   }
 
   publishers {
-      mailer('data-eng@poshmark.com', true, true)
+      mailer('data-eng@poshmark.com', false, true)
   }
 
 }
