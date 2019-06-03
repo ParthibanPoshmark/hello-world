@@ -77,6 +77,15 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
 
   disabled(true)
   
+  scm{
+     git{
+      branch('*/master')
+      remote{
+        url('https://github.com/ParthibanPoshmark/hello-world')
+      }
+     }
+  }
+
   
 
 }
