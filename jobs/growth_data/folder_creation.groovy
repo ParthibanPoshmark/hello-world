@@ -33,3 +33,7 @@ folder('gdf-google'){
 folder('gdf-etl'){
 	displayName('ETL')
 }
+
+folder('gdf-appsflyer'){
+	displayName('Appsflyer')
+}
