@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
+freeStyleJob('gdf-etl/gd-etl-growth_performance_characteristics') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
+        ": Calculates low_cutoff, high_cutoff, low_avg_daily_spend, low_avg_daily_user_looker, medium_avg_daily_spend, medium_avg_daily_user_looker, high_avg_daily_spend, high_avg_daily_user_looker from dw_growth_metrics for each growth_unit and acq_channel_group_v2 "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_daily_manual_spend "+
+        ": analytics_scratch.growth_unit_performance_characteristics, analytics_scratch.acq_channel_performance_characteristics "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/dw_daily_manual_spend.rake "+
+        ":	etl/growth_performance_characteristics.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -60,13 +60,6 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
-  parameters{
-    booleanParam('upload_to_s3', true, 'Default is true')
-    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
-  }
-
   weight(1)
   
   label('slave')
@@ -83,15 +76,18 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   }
 
   triggers{
-    cron('H H/4 * * *')
+    cron('H 7 * * *')
   }
 
-  wrappers{
-  	 buildUserVars()
+  wrappers {
+    timeout {
+      absolute(20)
+      failBuild()
+    }
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export doc_key=$doc_key && bundle exec rake google_sheets:dw_daily_manual_spend RAKE_ENV=docker_production --trace"')
+    shell('bash $WORKSPACE/docker_scripts/etl/growth_performance_characteristics.sh')
   }
 
 }

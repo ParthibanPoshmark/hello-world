@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
+freeStyleJob('gdf-etl/gd-etl-dw_growth_metrics') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
+        ": ETLs orders from raw_spark.orders, listings from raw_spark.listings, reg_attributions from vw_last_click_reg_attribution, estimated_spend from dw_spend_estimates, computed_spend from vw_computed_spend, installs from dw_install_attribution, campaign metadata from dw_growth_campaign, spend data from all attribution partners from dw_acquisition_spend then loads into dw_growth_metrics table "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_daily_manual_spend "+
+        ": analytics.dw_growth_metrics "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/dw_daily_manual_spend.rake "+
+        ":	etl/dw_daily_growth_metrics.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -60,13 +60,6 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
-  parameters{
-    booleanParam('upload_to_s3', true, 'Default is true')
-    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
-  }
-
   weight(1)
   
   label('slave')
@@ -83,15 +76,22 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   }
 
   triggers{
-    cron('H H/4 * * *')
+    cron('0,30 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 * * *')
   }
 
-  wrappers{
-  	 buildUserVars()
+  wrappers {
+    timeout {
+      absolute(20)
+      failBuild()
+    }
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export doc_key=$doc_key && bundle exec rake google_sheets:dw_daily_manual_spend RAKE_ENV=docker_production --trace"')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/etl/dw_daily_growth_metrics.sh')
+  }
+
+  publishers {
+    downstream('SA_Android_Women_Growth_Unit_Performance_Trends,SA_growth_dashboards_hourly,SA_kamal_time_dilation_dash,SA_iPhone_Women_Growth_Unit_Performance_Trends', 'UNSTABLE')
   }
 
 }

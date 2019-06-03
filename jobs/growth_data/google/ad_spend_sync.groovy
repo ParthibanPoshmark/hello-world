@@ -1,14 +1,15 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
+freeStyleJob('gdf-google/gd-google-ad_spend-sync') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
   "<table>"+
+
     "<tr>"+
       "<td style='font-family: Consolas,monospace; '>"+
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
+        ": Pulls campaign level spend data from google "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +18,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_daily_manual_spend "+
+        ": 	analytics.dw_acquisition_spend "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +36,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/dw_daily_manual_spend.rake "+
+        ":	google/ad_spend.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -60,19 +61,20 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
   parameters{
-    booleanParam('upload_to_s3', true, 'Default is true')
-    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
+    stringParam('start_date', null , 'YYYY-MM-DD')
+    stringParam('end_date', null , 'YYYY-MM-DD')
+    stringParam('days_back', '0', null)
+    booleanParam('upload_to_s3', true, null)
+    stringParam('last', '0', null)
   }
 
   weight(1)
   
   label('slave')
 
-  disabled(true)
-
+  disabled(true) //Its disabled
+  
   scm{
      git{
       branch('*/master')
@@ -81,17 +83,15 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
       }
      }
   }
-
-  triggers{
-    cron('H H/4 * * *')
-  }
-
-  wrappers{
-  	 buildUserVars()
+  
+  wrappers {
+    timeout {
+      absolute(10)
+    }
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export doc_key=$doc_key && bundle exec rake google_sheets:dw_daily_manual_spend RAKE_ENV=docker_production --trace"')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_adwords/google_adwords_auto_spend_import.sh')
   }
 
 }

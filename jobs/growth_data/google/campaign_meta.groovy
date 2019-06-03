@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
+freeStyleJob('gdf-google/gd-google-campaign_meta') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
+        ": Pulls campaign metadata from google "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_daily_manual_spend "+
+        ": 	analytics.dw_growth_campaign "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/dw_daily_manual_spend.rake "+
+        ":	google/campaign_meta.rake"+
       "</td>"+
    	"</tr>"+
 
@@ -63,8 +63,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   logRotator(-1, 30, -1, -1)
 
   parameters{
-    booleanParam('upload_to_s3', true, 'Default is true')
-    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
+    booleanParam('upload_to_s3', true, null)
   }
 
   weight(1)
@@ -82,16 +81,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
      }
   }
 
-  triggers{
-    cron('H H/4 * * *')
-  }
-
-  wrappers{
-  	 buildUserVars()
-  }
-
   steps{
-    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export doc_key=$doc_key && bundle exec rake google_sheets:dw_daily_manual_spend RAKE_ENV=docker_production --trace"')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/analytics/import_campaign_metadata_google_adwords.sh')
   }
 
 }

@@ -1,4 +1,4 @@
-freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
+multiJob('gdf-google/gd-google-search_console_stats') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -8,7 +8,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls spend data for <b>date+channel+platform+channel_group</b> combination from dw_acquisition_spend then overrides the same if manual spend data is present in spend overrides google sheet and finally updates it in dw_daily_manual_spend "+
+        ": Pulls device_category, impressions, landing_page etc., from google search console "+
       "</td>"+
    	"</tr>"+
     
@@ -17,7 +17,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_daily_manual_spend "+
+        ": 	analytics.dw_daily_seo_outbound "+
       "</td>"+
    	"</tr>"+
 
@@ -26,7 +26,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Owner	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	kamal@poshmark.com, parthiban@poshmark.com "+
+        ": 	aman@poshmark.com "+
       "</td>"+
    	"</tr>"+
 
@@ -35,7 +35,7 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	google_sheets/dw_daily_manual_spend.rake "+
+        ":	google/search_console_stats.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -63,8 +63,8 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   logRotator(-1, 30, -1, -1)
 
   parameters{
-    booleanParam('upload_to_s3', true, 'Default is true')
-    stringParam('doc_key', '19rtsxOXKgJ48x6bydeFoEnk75Jifbs3H7qcd1rgswn4', null)
+    booleanParam('upload_to_s3', true, null)
+    stringParam('days_back', '15', null)
   }
 
   weight(1)
@@ -83,15 +83,11 @@ freeStyleJob('gdf-google_sheets/gd-google_sheets-dw_daily_manual_spend') {
   }
 
   triggers{
-    cron('H H/4 * * *')
-  }
-
-  wrappers{
-  	 buildUserVars()
+    cron('H 8 * * *')
   }
 
   steps{
-    shell('#!/bin/bash --login -x\n\n. $WORKSPACE/docker_scripts/task_init.sh\nrun_docker "export doc_key=$doc_key && bundle exec rake google_sheets:dw_daily_manual_spend RAKE_ENV=docker_production --trace"')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/google_search_console/import_stats.sh')
   }
 
 }
