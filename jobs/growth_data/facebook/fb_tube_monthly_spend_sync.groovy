@@ -82,7 +82,7 @@ freeStyleJob('gdf-facebook/gd-facebook-fb_tube_monthly_spend-sync') {
     }
   }
 
-  publishers{
+  steps{
     downstreamParameterized{
       trigger('load_to_redshift_dw_acquisition_spend'){
         parameters{
