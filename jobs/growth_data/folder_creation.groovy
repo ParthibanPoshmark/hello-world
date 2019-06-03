@@ -37,3 +37,7 @@ folder('gdf-etl'){
 folder('gdf-appsflyer'){
 	displayName('Appsflyer')
 }
+
+folder('gdf-facebook'){
+	displayName('Facebook')
+}
