@@ -89,5 +89,12 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
   triggers{
     cron('H 3 * * *')
   }
+  
+  wrappers{
+    timeout{
+      elastic(300,5,90)
+    }
+    failBuild()
+  }
 
 }
