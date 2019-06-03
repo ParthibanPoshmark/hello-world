@@ -73,6 +73,10 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
 
   weight(1)
   
+  label('slave')
+
+  disabled(true)
+  
   
 
 }
