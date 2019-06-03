@@ -1,4 +1,4 @@
-freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
+multiJob('gdf-appsflyer/gd-appsflyer-reg_data-multi_job_sync') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -9,7 +9,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls app installation data such as installation time, id, channel, attribution_service etc., from Appsflyer for the last 3 days "+
+        ": Multi job which triggers Appsflyer ios and android tasks pulling acq_channel, campaign and ad details etc from Appsflyer that were part of user registration from android and ios accounts correspondingly "+
       "</td>"+
    	"</tr>"+
     
@@ -18,7 +18,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_install_attribution "+
+        ": 	analytics.dw_reg_attribution "+
       "</td>"+
    	"</tr>"+
 
@@ -36,7 +36,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	appsflyer/install_data.rake "+
+        ":	appsflyer/reg_data.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -61,44 +61,27 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
-  parameters{
-    stringParam('start_date', null , 'YYYY-MM-DD')
-    stringParam('end_date', null , 'YYYY-MM-DD')
-    stringParam('days_back', '3', null)
-    booleanParam('upload_to_s3', true, null)
-    stringParam('media_source', null, 'Add One media source that you want to filter on. Leave blank otherwise')
-  }
-
   weight(1)
+
+  concurrentBuild()
   
   label('slave')
 
   disabled(true)
-  
-  scm{
-     git{
-      branch('*/master')
-      remote{
-        url('https://github.com/ParthibanPoshmark/hello-world')
-      }
-     }
-  }
 
-  triggers{
-    cron('H 3 * * *')
-  }
-  
-  wrappers{
-    timeout{
-      elastic(300,5,90)
-    }
-    failBuild()
-  }
-  
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_install.sh')
+    phase('1'){
+      phaseJob('gdf-appsflyer/gd-appsflyer-reg_data-ios_sync'){
+      killPhaseCondition('NEVER')
+      currentJobParameters(true)
+      }
+      phaseJob('gdf-appsflyer/gd-appsflyer-reg_data-android_sync'){
+      killPhaseCondition('NEVER')
+      currentJobParameters(true)
+      }
+      executionType('PARALLEL')
+      continuationCondition('ALWAYS')
+    }
   }
 
 }

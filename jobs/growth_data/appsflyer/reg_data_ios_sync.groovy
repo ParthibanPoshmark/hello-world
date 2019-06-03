@@ -1,4 +1,4 @@
-freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
+freeStyleJob('gdf-appsflyer/gd-appsflyer-reg_data-ios_sync') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -9,7 +9,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls app installation data such as installation time, id, channel, attribution_service etc., from Appsflyer for the last 3 days "+
+        ": Pulls acq_channel, campaign and ad details etc from Appsflyer that were part of user registration for ios account "+
       "</td>"+
    	"</tr>"+
     
@@ -18,7 +18,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
        "<b>Updates Table	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": 	analytics.dw_install_attribution "+
+        ": 	analytics.dw_reg_attribution "+
       "</td>"+
    	"</tr>"+
 
@@ -36,7 +36,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
        "<b>Rake File	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ":	appsflyer/install_data.rake "+
+        ":	appsflyer/reg_data.rake "+
       "</td>"+
    	"</tr>"+
 
@@ -61,13 +61,14 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
   "</table>"+
 "</html>")
 
-  logRotator(-1, 30, -1, -1)
-
   parameters{
     stringParam('start_date', null , 'YYYY-MM-DD')
     stringParam('end_date', null , 'YYYY-MM-DD')
-    stringParam('days_back', '3', null)
+    stringParam('days_back', '0', null)
+    stringParam('event_types', 'reg_attr', null)
     booleanParam('upload_to_s3', true, null)
+    stringParam('last', '0', null)
+    stringParam('accounts', 'id470412147', null)
     stringParam('media_source', null, 'Add One media source that you want to filter on. Leave blank otherwise')
   }
 
@@ -85,20 +86,19 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
       }
      }
   }
-
-  triggers{
-    cron('H 3 * * *')
-  }
   
   wrappers{
     timeout{
-      elastic(300,5,90)
+      elastic(300,5,60)
     }
-    failBuild()
   }
-  
+
   steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_install.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_reg.sh')
+  }
+
+  publishers {
+      mailer('data-eng@poshmark.com', true, false)
   }
 
 }
