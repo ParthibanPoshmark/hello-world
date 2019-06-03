@@ -94,7 +94,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-sync') {
   }
 
   steps{
-    shell('bash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_install.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_install.sh')
   }
 
 }

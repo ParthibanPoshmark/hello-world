@@ -96,7 +96,7 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-reg_data-1_day') {
   }
 
   steps{
-    shell('bash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_reg.sh')
+    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_reg.sh')
   }
 
 }
