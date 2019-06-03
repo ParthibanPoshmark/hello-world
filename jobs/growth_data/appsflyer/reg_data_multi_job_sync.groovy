@@ -65,7 +65,7 @@ multiJob('gdf-appsflyer/gd-appsflyer-reg_data-multi_job_sync') {
 
   concurrentBuild()
   
-  label('slave')
+  label('master')
 
   disabled(true)
 
