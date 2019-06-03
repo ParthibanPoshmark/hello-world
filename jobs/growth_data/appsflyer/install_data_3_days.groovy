@@ -97,8 +97,4 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
     failBuild()
   }
 
-  steps{
-    shell('#!/bin/bash --login -x\n\nbash $WORKSPACE/docker_scripts/reg_attributions/appsflyer_install.sh')
-  }
-
 }
