@@ -93,8 +93,8 @@ freeStyleJob('gdf-appsflyer/gd-appsflyer-install_data-3_days') {
   wrappers{
     timeout{
       elastic(300,5,90)
+      failBuild()
     }
-    failBuild()
   }
   
   steps{
