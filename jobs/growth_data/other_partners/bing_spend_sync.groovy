@@ -1,4 +1,4 @@
-freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend') {
+freeStyleJob('gdf-other_partners/gd-other_partners-bing_spend-sync') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
