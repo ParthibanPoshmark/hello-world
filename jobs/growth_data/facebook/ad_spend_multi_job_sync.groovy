@@ -140,7 +140,7 @@ multiJob('gdf-facebook/gd-facebook-ad_spend-multi_job_sync') {
   }
 
   publishers {
-      mailer('data-eng@poshmark.com', true, false)
+      mailer('data-eng@poshmark.com', false, false)
     }
 
 }
