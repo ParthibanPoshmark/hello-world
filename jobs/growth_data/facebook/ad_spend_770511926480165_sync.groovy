@@ -1,4 +1,4 @@
-freeStyleJob('gdf-facebook/gd-facebook-ad_spend-1994247617556775_sync') {
+freeStyleJob('gdf-facebook/gd-facebook-ad_spend-770511926480165_sync') {
 	description("<html>"+
   "<br/>"+
   "<br/>"+
@@ -9,7 +9,7 @@ freeStyleJob('gdf-facebook/gd-facebook-ad_spend-1994247617556775_sync') {
        "<b>Description	</b>"+	
       "</td>"+
       "<td style='font-family: Consolas,monospace;'>"+
-        ": Pulls Ad spend details from facebook for account 1994247617556775 "+
+        ": Pulls Ad spend details from facebook for account 770511926480165 "+
       "</td>"+
    	"</tr>"+
     
