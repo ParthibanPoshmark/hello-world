@@ -86,7 +86,6 @@ freeStyleJob('gdf-facebook/gd-facebook-ad_meta-1551884058161793') {
     timeout{
       elastic(300,5,30)
     }
-    buildUserVars()
   }
 
   steps{

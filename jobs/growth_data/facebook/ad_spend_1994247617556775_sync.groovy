@@ -67,7 +67,6 @@ freeStyleJob('gdf-facebook/gd-facebook-ad_spend-1994247617556775_sync') {
     stringParam('start_date', null , null)
     stringParam('end_date', null , null)
     stringParam('last', '0' , null)
-    stringParam('accounts', 'act_1994247617556775' , null)
   }
 
   weight(1)
